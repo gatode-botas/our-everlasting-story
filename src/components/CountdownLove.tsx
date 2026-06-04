@@ -18,7 +18,8 @@ function diff(now: Date) {
     days += prev; months--;
   }
   if (months < 0) { months += 12; years--; }
-  return { years, months, days, hours, minutes, seconds };
+  const totalDays = Math.floor((now.getTime() - START.getTime()) / 86400000);
+  return { years, months, days, hours, minutes, seconds, totalDays };
 }
 
 export function CountdownLove() {
@@ -30,7 +31,7 @@ export function CountdownLove() {
   const items = [
     { v: t.years, l: "Anos" },
     { v: t.months, l: "Meses" },
-    { v: t.days, l: "Dias" },
+    { v: t.totalDays, l: "Dias" },
     { v: t.hours, l: "Horas" },
     { v: t.minutes, l: "Minutos" },
     { v: t.seconds, l: "Segundos" },
