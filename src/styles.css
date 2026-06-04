@@ -147,5 +147,84 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+    cursor: none;
   }
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Cinzel:wght@400;500;600;700&family=Dancing+Script:wght@400;600;700&display=swap');
+
+.font-display { font-family: 'Cinzel', serif; letter-spacing: 0.04em; }
+.font-script { font-family: 'Dancing Script', cursive; }
+.font-serif-body { font-family: 'Cormorant Garamond', serif; }
+
+.text-gold { color: var(--gold); }
+.text-rose { color: var(--rose); }
+.bg-gradient-gold { background: var(--gradient-gold); }
+.bg-gradient-rose-gold { background: var(--gradient-rose-gold); }
+.text-gradient-gold {
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.shadow-glow { box-shadow: var(--shadow-glow); }
+.shadow-rose { box-shadow: var(--shadow-rose); }
+
+/* Custom cursor */
+.cursor-dot, .cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 9999px;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: screen;
+}
+.cursor-dot {
+  width: 6px; height: 6px;
+  background: var(--gold);
+  box-shadow: 0 0 12px var(--gold);
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid oklch(0.85 0.15 85 / 0.6);
+  transition: width .2s, height .2s, background .2s;
+}
+@media (hover: none), (max-width: 768px) {
+  body { cursor: auto; }
+  .cursor-dot, .cursor-ring { display: none; }
+}
+
+/* Floating heart */
+@keyframes float-heart {
+  0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-10vh) translateX(var(--drift, 30px)) rotate(360deg); opacity: 0; }
+}
+.floating-heart { animation: float-heart linear infinite; }
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1); }
+}
+.sparkle { animation: sparkle 3s ease-in-out infinite; }
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer-text {
+  background: linear-gradient(90deg, var(--gold-deep) 0%, var(--gold) 25%, oklch(1 0 0) 50%, var(--gold) 75%, var(--gold-deep) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+::selection { background: var(--gold); color: var(--background); }
+
+html { scroll-behavior: smooth; }
