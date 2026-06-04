@@ -133,6 +133,28 @@ export function MusicPlayer() {
         />
       )}
 
+      {/* Persistent YouTube iframe — keeps playing even when player is closed */}
+      {!isAudio && track.youtubeId && (
+        <div
+          className={
+            isOpen
+              ? "hidden"
+              : "fixed bottom-24 right-6 z-40 w-[1px] h-[1px] overflow-hidden opacity-0 pointer-events-none"
+          }
+          aria-hidden="true"
+        >
+          <iframe
+            key={track.youtubeId}
+            width="200"
+            height="120"
+            src={`https://www.youtube.com/embed/${track.youtubeId}?autoplay=1&mute=0`}
+            title={track.title}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          />
+        </div>
+      )}
+
       {/* Collapsed button */}
       {!isOpen && (
         <motion.button
