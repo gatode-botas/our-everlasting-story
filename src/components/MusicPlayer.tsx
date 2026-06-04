@@ -15,32 +15,32 @@ interface Track {
 const tracks: Track[] = [
   {
     id: 1,
+    title: "Era Óbvio",
+    artist: "Marisa Monte",
+    src: "",
+    type: "youtube",
+    youtubeId: "b59_Ry2AGtU",
+  },
+  {
+    id: 2,
     title: "Nosso Amor",
     artist: "Trilha Romântica",
     src: "https://cdn.pixabay.com/audio/2022/10/30/audio_347c1e4a55.mp3",
     type: "audio",
   },
   {
-    id: 2,
+    id: 3,
     title: "Melodia do Coração",
     artist: "Piano Romântico",
     src: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3",
     type: "audio",
   },
   {
-    id: 3,
+    id: 4,
     title: "Eternamente Sua",
     artist: "Som de Amor",
     src: "https://cdn.pixabay.com/audio/2023/02/28/audio_2a66b02a92.mp3",
     type: "audio",
-  },
-  {
-    id: 4,
-    title: "A Thousand Years",
-    artist: "Christina Perri",
-    src: "",
-    type: "youtube",
-    youtubeId: "b59_Ry2AGtU",
   },
 ];
 
