@@ -3,6 +3,32 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// YouTube IFrame API types
+declare global {
+  interface Window {
+    YT?: any;
+    onYouTubeIframeAPIReady?: () => void;
+  }
+}
+
+let ytApiPromise: Promise<void> | null = null;
+function loadYouTubeAPI(): Promise<void> {
+  if (typeof window === "undefined") return Promise.resolve();
+  if (window.YT && window.YT.Player) return Promise.resolve();
+  if (ytApiPromise) return ytApiPromise;
+  ytApiPromise = new Promise<void>((resolve) => {
+    const prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => {
+      prev?.();
+      resolve();
+    };
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+  });
+  return ytApiPromise;
+}
+
 interface Track {
   id: number;
   title: string;
@@ -60,9 +86,66 @@ export function MusicPlayer() {
   const [showPlaylist, setShowPlaylist] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const progressInterval = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
+  const ytContainerRef = useRef<HTMLDivElement>(null);
+  const ytPlayerRef = useRef<any>(null);
+  const [ytReady, setYtReady] = useState(false);
 
   const track = tracks[currentTrack];
   const isAudio = track.type === "audio";
+
+  // Initialize YouTube player once
+  useEffect(() => {
+    let cancelled = false;
+    loadYouTubeAPI().then(() => {
+      if (cancelled || !ytContainerRef.current || ytPlayerRef.current) return;
+      ytPlayerRef.current = new window.YT.Player(ytContainerRef.current, {
+        height: "180",
+        width: "100%",
+        videoId: track.type === "youtube" ? track.youtubeId : "",
+        playerVars: { autoplay: 0, controls: 0, modestbranding: 1, rel: 0, playsinline: 1 },
+        events: {
+          onReady: (e: any) => {
+            e.target.setVolume(Math.round(volume * 100));
+            setYtReady(true);
+          },
+          onStateChange: (e: any) => {
+            // 1 = playing, 2 = paused, 0 = ended
+            if (e.data === 1) setIsPlaying(true);
+            else if (e.data === 2) setIsPlaying(false);
+            else if (e.data === 0) handleEnded();
+          },
+        },
+      });
+    });
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Load video when current track changes to a YouTube one
+  useEffect(() => {
+    if (!ytReady || !ytPlayerRef.current) return;
+    if (track.type === "youtube" && track.youtubeId) {
+      ytPlayerRef.current.loadVideoById(track.youtubeId);
+      if (!isPlaying) ytPlayerRef.current.pauseVideo?.();
+    } else {
+      ytPlayerRef.current.stopVideo?.();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentTrack, ytReady]);
+
+  // Play/pause YouTube based on isPlaying state
+  useEffect(() => {
+    if (!ytReady || !ytPlayerRef.current || track.type !== "youtube") return;
+    if (isPlaying) ytPlayerRef.current.playVideo?.();
+    else ytPlayerRef.current.pauseVideo?.();
+  }, [isPlaying, ytReady, track.type]);
+
+  // Volume for YouTube
+  useEffect(() => {
+    if (ytReady && ytPlayerRef.current) {
+      ytPlayerRef.current.setVolume?.(Math.round(volume * 100));
+    }
+  }, [volume, ytReady]);
 
   // Auto-play when track changes and player is "active"
   useEffect(() => {
