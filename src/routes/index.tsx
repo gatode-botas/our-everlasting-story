@@ -24,8 +24,6 @@ function Index() {
   const [lightbox, setLightbox] = useState<number | null>(null);
   const [surpriseOpen, setSurpriseOpen] = useState(false);
   const [burst, setBurst] = useState(false);
-  const [audioOn, setAudioOn] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
 
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
