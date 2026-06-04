@@ -59,7 +59,7 @@ export function MusicPlayer() {
   const [volume, setVolume] = useState(0.5);
   const [showPlaylist, setShowPlaylist] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const progressInterval = useRef<ReturnType<typeof setInterval>>();
+  const progressInterval = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 
   const track = tracks[currentTrack];
   const isAudio = track.type === "audio";
