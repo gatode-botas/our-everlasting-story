@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { photos, gallery } from "@/lib/photos";
 import { Cursor } from "@/components/Cursor";
 import { Particles, FloatingHearts } from "@/components/Particles";
 import { CountdownLove } from "@/components/CountdownLove";
 import { Lightbox } from "@/components/Lightbox";
+import { MusicPlayer } from "@/components/MusicPlayer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
