@@ -133,6 +133,21 @@ export function MusicPlayer() {
         />
       )}
 
+      {/* Persistent YouTube iframe — always mounted so playback continues when the panel is closed */}
+      {!isAudio && track.youtubeId && (
+        <iframe
+          key={track.youtubeId}
+          title={track.title}
+          src={`https://www.youtube.com/embed/${track.youtubeId}?autoplay=1&mute=0`}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          className={
+            isOpen
+              ? "fixed bottom-[120px] right-6 z-50 w-[300px] md:w-[340px] h-[180px] rounded-xl border border-[color:var(--gold)]/20"
+              : "fixed bottom-0 right-0 w-px h-px opacity-0 pointer-events-none -z-10"
+          }
+        />
+      )}
+
       {/* Collapsed button */}
       {!isOpen && (
         <motion.button
@@ -176,20 +191,9 @@ export function MusicPlayer() {
                 </button>
               </div>
 
-              {/* YouTube Embed */}
+              {/* Placeholder for persistent YouTube iframe (rendered outside this panel) */}
               {!isAudio && track.youtubeId && (
-                <div className="mb-4 rounded-xl overflow-hidden border border-[color:var(--gold)]/20">
-                  <iframe
-                    width="100%"
-                    height="180"
-                    src={`https://www.youtube.com/embed/${track.youtubeId}?autoplay=1&mute=0`}
-                    title={track.title}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="rounded-xl"
-                  />
-                </div>
+                <div className="mb-4 h-[180px] rounded-xl" />
               )}
 
               {/* Track Info */}
