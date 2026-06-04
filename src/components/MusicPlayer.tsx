@@ -216,20 +216,16 @@ export function MusicPlayer() {
         />
       )}
 
-      {/* Persistent YouTube iframe — always mounted so playback continues when the panel is closed */}
-      {!isAudio && track.youtubeId && (
-        <iframe
-          key={track.youtubeId}
-          title={track.title}
-          src={`https://www.youtube.com/embed/${track.youtubeId}?autoplay=1&mute=0`}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          className={
-            isOpen
-              ? "fixed bottom-[120px] right-6 z-50 w-[300px] md:w-[340px] h-[180px] rounded-xl border border-[color:var(--gold)]/20"
-              : "fixed bottom-0 right-0 w-px h-px opacity-0 pointer-events-none -z-10"
-          }
-        />
-      )}
+      {/* Persistent YouTube IFrame API container — always mounted so playback continues when the panel is closed */}
+      <div
+        className={
+          isOpen && track.type === "youtube"
+            ? "fixed bottom-[120px] right-6 z-50 w-[300px] md:w-[340px] h-[180px] rounded-xl overflow-hidden border border-[color:var(--gold)]/20"
+            : "fixed bottom-0 right-0 w-px h-px opacity-0 pointer-events-none -z-10 overflow-hidden"
+        }
+      >
+        <div ref={ytContainerRef} className="w-full h-full" />
+      </div>
 
       {/* Collapsed button */}
       {!isOpen && (
