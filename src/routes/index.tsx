@@ -52,12 +52,6 @@ function Index() {
     { icon: "🌙", title: "Você me faz feliz", text: "Mais do que eu jamais sonhei ser." },
   ];
 
-  const toggleAudio = () => {
-    if (!audioRef.current) return;
-    if (audioOn) audioRef.current.pause();
-    else audioRef.current.play().catch(() => {});
-    setAudioOn(!audioOn);
-  };
 
   const openSurprise = () => {
     setBurst(true);
@@ -71,16 +65,7 @@ function Index() {
       <Particles />
       <FloatingHearts />
 
-      <audio ref={audioRef} loop src="https://cdn.pixabay.com/audio/2022/10/30/audio_347c1e4a55.mp3" />
-
-      {/* Audio toggle */}
-      <button
-        onClick={toggleAudio}
-        className="fixed top-6 right-6 z-50 w-12 h-12 rounded-full bg-card/60 backdrop-blur-md border border-[color:var(--gold)]/40 flex items-center justify-center text-gold hover:scale-110 transition-transform shadow-glow"
-        aria-label="Toggle music"
-      >
-        {audioOn ? "♪" : "♫"}
-      </button>
+      <MusicPlayer />
 
       {/* HERO */}
       <section ref={heroRef} className="relative h-screen w-full overflow-hidden flex items-center justify-center">
